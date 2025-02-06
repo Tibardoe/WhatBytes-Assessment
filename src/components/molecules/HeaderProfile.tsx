@@ -10,7 +10,7 @@ export default function HeaderProfile() {
         height={35}
         className="rounded-full"
       />
-      <p className="text-lg font-bold">Rahil Siddique</p>
+      <p className="text-lg font-bold">Benjamin Tibardoe</p>
     </div>
   );
 }
