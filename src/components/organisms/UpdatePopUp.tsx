@@ -53,9 +53,9 @@ export default function UpdatePopUp() {
   const formm = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      rank: form?.rank ?? 0,
-      percentile: form?.percentile ?? 0,
-      score: form?.score ?? 0,
+      rank: form?.rank,
+      percentile: form?.percentile,
+      score: form?.score,
     },
   });
 
@@ -71,7 +71,7 @@ export default function UpdatePopUp() {
   return (
     <div className="fixed top-0 left-0 w-full h-dvh bg-black bg-opacity-70 flex justify-center items-center">
       {/* Pop-Up */}
-      <div className="bg-white p-7 w-2/5 rounded-lg">
+      <div className="bg-white p-7 w-3/4 rounded-lg xl:w-1/2">
         <div className="font-bold flex justify-between text-2xl mb-10">
           <h1>Update Scores</h1>
           <Image
@@ -94,7 +94,7 @@ export default function UpdatePopUp() {
               render={({ field }) => (
                 <FormItem className="flex items-center justify-between">
                   <Label
-                    className="text-lg flex items-center gap-3"
+                    className="text-lg flex items-center gap-3 min-w-fit"
                     htmlFor="name"
                   >
                     <Numbering number={1} />
@@ -121,7 +121,7 @@ export default function UpdatePopUp() {
               render={({ field }) => (
                 <FormItem className="flex items-center justify-between">
                   <Label
-                    className="text-lg flex items-center gap-3"
+                    className="text-lg flex items-center gap-3 min-w-fit"
                     htmlFor="percentile"
                   >
                     <Numbering number={2} />
@@ -148,7 +148,7 @@ export default function UpdatePopUp() {
               render={({ field }) => (
                 <FormItem className="flex items-center justify-between">
                   <Label
-                    className="text-lg flex items-center gap-3"
+                    className="text-lg flex items-center gap-3 min-w-fit"
                     htmlFor="score"
                   >
                     <Numbering number={3} />

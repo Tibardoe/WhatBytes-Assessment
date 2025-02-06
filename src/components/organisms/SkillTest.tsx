@@ -34,7 +34,7 @@ export default function SkillTest() {
     },
   ];
   return (
-    <div className="pl-10 pr-5">
+    <div className="pl-10 pr-5 mb-10">
       <h1 className="font-bold opacity-60 py-7">Skill Test</h1>
 
       <div className="flex flex-col gap-5 xl:flex-row">
