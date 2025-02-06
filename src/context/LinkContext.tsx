@@ -3,15 +3,42 @@ import { createContext, useContext, useState, type ReactNode } from "react";
 type ContextType = {
   activeLink: string;
   setActiveLink: (link: string) => void;
+  showPopup: boolean;
+  setShowPopup: (value: boolean) => void;
+  form: {
+    rank?: number;
+    percentile?: number;
+    score?: number;
+  };
+  setForm: (data: { rank: number; percentile: number; score: number }) => void;
 };
 
 const ActiveLinkContext = createContext<ContextType | undefined>(undefined);
 
 export function ActiveLinkProvider({ children }: { children: ReactNode }) {
   const [activeLink, setActiveLink] = useState("Dashboard");
+  const [showPopup, setShowPopup] = useState(false);
+  const [form, setForm] = useState<{
+    rank: number;
+    percentile: number;
+    score: number;
+  }>({
+    rank: 0,
+    percentile: 0,
+    score: 0,
+  });
 
   return (
-    <ActiveLinkContext.Provider value={{ activeLink, setActiveLink }}>
+    <ActiveLinkContext.Provider
+      value={{
+        activeLink,
+        setActiveLink,
+        showPopup,
+        setShowPopup,
+        form,
+        setForm,
+      }}
+    >
       {children}
     </ActiveLinkContext.Provider>
   );

@@ -3,8 +3,13 @@ import Bar from "../molecules/Bar";
 import Image from "next/image";
 import Button from "../atoms/Button";
 import Proficiency from "../molecules/Proficiency";
+import ComparisonGraph from "./ComparisonGraph";
+import CircularProgressBar from "../molecules/CircularProgressBar";
+import { useActiveLink } from "@/context/LinkContext";
 
 export default function SkillTest() {
+  const { form } = useActiveLink();
+
   const spanTexts = [
     { detail: "Question: 08 | " },
     { detail: "Duration: 15mins | " },
@@ -12,15 +17,19 @@ export default function SkillTest() {
   ];
 
   const emojisAndText = [
-    { emojiUrl: "/assets/images/trophy.png", value: 1, text: "YOUR RANK" },
+    {
+      emojiUrl: "/assets/images/trophy.png",
+      value: Number(form.rank),
+      text: "YOUR RANK",
+    },
     {
       emojiUrl: "/assets/images/clipboard.png",
-      value: "30%,",
+      value: `${Number(form.percentile)}%`,
       text: "PERCENTILE",
     },
     {
       emojiUrl: "/assets/images/check.png",
-      value: "10 / 15",
+      value: `${Number(form.score)}/15`,
       text: "CORRECT ANSWER",
     },
   ];
@@ -28,10 +37,11 @@ export default function SkillTest() {
     <div className="pl-10 pr-5">
       <h1 className="font-bold opacity-60 py-7">Skill Test</h1>
 
-      <div className="flex gap-5">
+      <div className="flex flex-col gap-5 xl:flex-row">
         <div className="space-y-5">
+          {/* Skill test */}
           <Bar>
-            <div className="flex gap-5 items-center">
+            <div className="flex items-center justify-between">
               <Image
                 src="/assets/images/html.svg"
                 alt="HTML logo"
@@ -47,11 +57,12 @@ export default function SkillTest() {
                     <span key={detail.detail}>{detail.detail}</span>
                   ))}
                 </div>
-              </div>{" "}
+              </div>
               <Button text="Update" />
             </div>
           </Bar>
 
+          {/* Quick statistics */}
           <Bar>
             <div>
               <h2 className="font-bold text-xl mb-5">Quick Statistics</h2>
@@ -76,12 +87,15 @@ export default function SkillTest() {
             </div>
           </Bar>
 
+          {/* Comparison graph */}
           <Bar>
-            <div className="w-full">
+            <div className="w-full space-y-5">
               <h2 className="text-xl font-bold mb-5">Comparison Graph</h2>
               <div className="flex justify-between">
                 <p>
-                  <span>You scored {emojisAndText[1].value} percentile</span>
+                  <span className="font-bold">
+                    You scored {emojisAndText[1].value} percentile
+                  </span>{" "}
                   which is lower than the <br /> average percentile 72% of all
                   engineers who took this assessment
                 </p>
@@ -94,10 +108,12 @@ export default function SkillTest() {
                   />
                 </span>
               </div>
+              <ComparisonGraph userScore={form.percentile} />
             </div>
           </Bar>
         </div>
 
+        {/* Syllabus Wise */}
         <div className="space-y-5">
           <Bar>
             <h1 className="font-bold text-xl">Syllabus Wise Analysis</h1>
@@ -125,19 +141,21 @@ export default function SkillTest() {
             </div>
           </Bar>
 
+          {/* Question analysis */}
           <Bar>
-            <div className="flex w-full justify-between text-xl font-bold">
+            <div className="flex w-full justify-between text-xl font-bold mb-5">
               <h2>Question Analysis</h2>
-              <p className="text-blue-500">10/15</p>
+              <p className="text-blue-500">{form.score}/15</p>
             </div>
-            <div>
+            <div className="flex flex-col gap-10 items-center">
               <p>
-                {" "}
-                <span>
-                  You scored 10 questions out of 15. However it still needs some
-                  improvements.
-                </span>
+                <span className="font-bold">
+                  You scored {form.score} questions out of 15.
+                </span>{" "}
+                However it still needs some improvements.
               </p>
+
+              <CircularProgressBar score={form.score} total={15} />
             </div>
           </Bar>
         </div>
