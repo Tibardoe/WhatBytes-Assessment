@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 
 type ContextType = {
   activeLink: string;
@@ -16,17 +22,50 @@ type ContextType = {
 const ActiveLinkContext = createContext<ContextType | undefined>(undefined);
 
 export function ActiveLinkProvider({ children }: { children: ReactNode }) {
-  const [activeLink, setActiveLink] = useState("Dashboard");
+  const [activeLink, setActiveLink] = useState<string>("");
   const [showPopup, setShowPopup] = useState(false);
   const [form, setForm] = useState<{
     rank: number;
     percentile: number;
     score: number;
-  }>({
-    rank: 0,
-    percentile: 0,
-    score: 0,
+  }>(() => {
+    if (typeof window !== "undefined") {
+      const storedForm = localStorage.getItem("form");
+      return storedForm
+        ? JSON.parse(storedForm)
+        : {
+            rank: 0,
+            percentile: 0,
+            score: 0,
+          };
+    }
+    return {
+      rank: 0,
+      percentile: 0,
+      score: 0,
+    };
   });
+
+  useEffect(() => {
+    const storedActiveLink = localStorage.getItem("activeLink");
+    setActiveLink(storedActiveLink ?? "Dashboard");
+  }, []);
+
+  useEffect(() => {
+    if (activeLink !== "null") {
+      localStorage.setItem("activeLink", activeLink);
+    }
+  }, [activeLink]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("form", JSON.stringify(form));
+    }
+  }, [form]);
+
+  if (!activeLink) {
+    return null;
+  }
 
   return (
     <ActiveLinkContext.Provider
